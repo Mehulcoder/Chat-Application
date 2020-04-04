@@ -5,20 +5,22 @@ var socket = io();
 //
 
 // names should match exactly with the emit name in index.js
-socket.on('countUpdated', (count) => {
-    
-    console.log("Count has been updated!", count);
+socket.on('message', (message) => {
+    console.log(message);
 });
 
 //
 // ─── DATA TO THE SERVER ─────────────────────────────────────────────────────────
 //
 
-$("#increment").click(function (e) { 
+
+$("#message-form").submit(function (e) { 
     e.preventDefault();
+    var message = $('input[name=message]').val();
     // Sending data to the server
-    socket.emit("increment");
-})
+    socket.emit("sendMessage", message);
+    $('input[name=message]').val('');
+});
 
 
 

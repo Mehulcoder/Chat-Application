@@ -20,17 +20,21 @@ app.use(express.static(publicDirectoryPath));
 // ─── ON CONNECTION ──────────────────────────────────────────────────────────────
 //
 
-var count = 0;
-
 io.on('connection', (socket)=>{
-    console.log('a user connected');
+    console.log('A user connected');
+    socket.broadcast.emit('message','A new user has joined!')
     // Send data to the client
-    socket.emit('countUpdated', count);
+    socket.emit('message','Welcome to the application');
 
-    socket.on('increment',() => {
-        count++;
-        // Send the data again to the ALL the client(broadcast)
-        io.emit('countUpdated', count);
+    //message is recieved
+    socket.on('sendMessage', (message) => {
+        //emit to all the clients
+        io.emit('message', message);
+    })
+
+    //when the client gets disconnected
+    socket.on('disconnect',() => {
+        io.emit('message', "User has left");
     })
 });
 
