@@ -1,3 +1,4 @@
+
 var socket = io();
 
 //
@@ -13,21 +14,20 @@ var locationMessageTemplate = $('#location-message-template').html();
 
 //Location message
 socket.on('locationMessage', (url) => {
-    console.log("Location: ", url);
     //Render the template as the message is recieved 
     var html = Mustache.render(locationMessageTemplate,{
-        url 
+        url:url.text,
+        createdAt:moment(url.createdAt).format('h:mm a')
     });
     $('#messages').append(html);
 })
 
 // Normal message
 socket.on('message', (message) => {
-    console.log(message);
-    
     //Render the template as the message is recieved 
     var html = Mustache.render(messageTemplate,{
-        message
+        message: message.text,
+        createdAt: moment(message.createdAt).format('h:mm a')
     });
     $('#messages').append(html);
 });

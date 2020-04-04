@@ -4,6 +4,7 @@ var socketio = require('socket.io');
 var Filter = require('bad-words');
 var http = require('http');
 var path = require('path');
+var {generateMessage, generateLocationMessage} = require('./utils/messages');
 
 // ────────────────────────────────────────────────────────────────────────────────
 
@@ -23,9 +24,9 @@ app.use(express.static(publicDirectoryPath));
 
 io.on('connection', (socket)=>{
     console.log('A user connected');
-    socket.broadcast.emit('message','A new user has joined!')
+    socket.broadcast.emit('message',generateMessage('A new user has joined!'))
     // Send data to the client
-    socket.emit('message','Welcome to the application');
+    socket.emit('message',generateMessage('Welcome to the application'));
 
     // Message is recieved
     socket.on('sendMessage', (message, callback) => {
@@ -36,20 +37,20 @@ io.on('connection', (socket)=>{
         }
 
         //emit to all the clients
-        io.emit('message', message);
+        io.emit('message', generateMessage(message));
         //When message is emmited to all the clients by the server. Send this to sender client
         callback()
     });
 
-    //when the client gets disconnected
-    socket.on('disconnect',() => {
-        io.emit('message', "User has left");
-    })
-
     //when client sends location
     socket.on('sendLocation', (location, status) => {
-        socket.broadcast.emit('locationMessage',`https://google.com/maps?q=${location.lat},${location.long}`);
+        socket.broadcast.emit('locationMessage',generateLocationMessage(`https://google.com/maps?q=${location.lat},${location.long}`));
         status("Location has been shared!");
+    })
+
+    //when the client gets disconnected
+    socket.on('disconnect',() => {
+        io.emit('message', generateMessage("User has left"));
     })
 });
 
