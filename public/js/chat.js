@@ -1,12 +1,35 @@
 var socket = io();
 
 //
+// ─── TEMPLATES ──────────────────────────────────────────────────────────────────
+//
+
+var messageTemplate = $('#message-template').html();
+var locationMessageTemplate = $('#location-message-template').html();
+
+//
 // ─── RECIEVE DATA FROM SERVER ───────────────────────────────────────────────────
 //
 
-// names should match exactly with the emit name in index.js
+//Location message
+socket.on('locationMessage', (url) => {
+    console.log("Location: ", url);
+    //Render the template as the message is recieved 
+    var html = Mustache.render(locationMessageTemplate,{
+        url 
+    });
+    $('#messages').append(html);
+})
+
+// Normal message
 socket.on('message', (message) => {
     console.log(message);
+    
+    //Render the template as the message is recieved 
+    var html = Mustache.render(messageTemplate,{
+        message
+    });
+    $('#messages').append(html);
 });
 
 //
@@ -29,6 +52,7 @@ $("#message-form").submit(function (e) {
             return console.log(error);
         }
 
+        //Success
         console.log("Message has been delivered!")
     }); 
 
@@ -62,7 +86,6 @@ $("#send-location").click(function (e) {
 
     //enable
     $("#send-location").removeAttr('disabled');
-    // $("#send-location").attr('disabled', 'disabled');
 
     
 });

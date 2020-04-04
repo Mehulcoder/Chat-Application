@@ -1,19 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Jquery -->
     <script
     src="https://code.jquery.com/jquery-3.4.1.js"
     integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
     crossorigin="anonymous"></script>
-
+    <!-- Socket.io -->
     <script src="/socket.io/socket.io.js"></script>
+    <!-- Moustache.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.1.0/mustache.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.3/qs.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat-Application</title>
 </head>
 
 <body>
-    <h1>Hello, you are the best</h1>
+
+    <div id="messages"></div>
+
+    <script id="message-template" type="html/text">
+        <p>{{message}}</p>
+    </script>
+
+    <script id="location-message-template" type="text/html">
+        <p>
+            <a href="{{url}}" target='_blank'>My current location</a>
+        </p>
+    </script>
+
     <button id="send-location">Share Location</button>
     <form id="message-form">
         <input type="text" name="message">

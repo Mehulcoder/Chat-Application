@@ -27,7 +27,7 @@ io.on('connection', (socket)=>{
     // Send data to the client
     socket.emit('message','Welcome to the application');
 
-    //message is recieved
+    // Message is recieved
     socket.on('sendMessage', (message, callback) => {
         //Check Bad Language
         var filter = new Filter();
@@ -38,7 +38,7 @@ io.on('connection', (socket)=>{
         //emit to all the clients
         io.emit('message', message);
         //When message is emmited to all the clients by the server. Send this to sender client
-        callback('Delivered!')
+        callback()
     });
 
     //when the client gets disconnected
@@ -48,9 +48,7 @@ io.on('connection', (socket)=>{
 
     //when client sends location
     socket.on('sendLocation', (location, status) => {
-        console.log(location)
-        socket.broadcast.emit('message',`https://google.com/maps?q=${location.lat},${location.long}`);
-        
+        socket.broadcast.emit('locationMessage',`https://google.com/maps?q=${location.lat},${location.long}`);
         status("Location has been shared!");
     })
 });
