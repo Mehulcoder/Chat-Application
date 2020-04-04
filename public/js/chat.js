@@ -22,6 +22,21 @@ $("#message-form").submit(function (e) {
     $('input[name=message]').val('');
 });
 
+//Share the location
+$("#send-location").click(function (e) { 
+    e.preventDefault();
+    if (!navigator.geolocation) {
+        return alert("Geolocation is not supported in your browser!")
+    }
 
+    navigator.geolocation.getCurrentPosition((position) => {
+        var location = {
+            lat : position.coords.latitude,
+            long : position.coords.longitude
+        }
+        socket.emit('sendLocation', location);
+    })
+    
+});
 
 // ────────────────────────────────────────────────────────────────────────────────
