@@ -4,7 +4,8 @@
   "description": "A chat room application",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/index.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,10 @@
   "bugs": {
     "url": "https://github.com/Mehulcoder/Chat-Application/issues"
   },
-  "homepage": "https://github.com/Mehulcoder/Chat-Application#readme"
+  "homepage": "https://github.com/Mehulcoder/Chat-Application#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "path": "^0.12.7",
+    "request": "^2.88.2"
+  }
 }
