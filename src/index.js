@@ -20,8 +20,18 @@ app.use(express.static(publicDirectoryPath));
 // ─── ON CONNECTION ──────────────────────────────────────────────────────────────
 //
 
-io.on('connection', ()=>{
+var count = 0;
+
+io.on('connection', (socket)=>{
     console.log('a user connected');
+    // Send data to the client
+    socket.emit('countUpdated', count);
+
+    socket.on('increment',() => {
+        count++;
+        // Send the data again to the ALL the client(broadcast)
+        io.emit('countUpdated', count);
+    })
 });
 
 
