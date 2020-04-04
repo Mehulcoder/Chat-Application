@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A chat room application",
   "nodemonConfig": {
-    "ext":"js,html"
+    "ext": "js,html"
   },
   "main": "index.js",
   "scripts": {
@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/Mehulcoder/Chat-Application#readme",
   "dependencies": {
+    "bad-words": "^3.0.3",
     "express": "^4.17.1",
     "path": "^0.12.7",
     "request": "^2.88.2",

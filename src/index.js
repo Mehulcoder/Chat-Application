@@ -1,6 +1,7 @@
 var express = require('express');
 var request = require('request');
 var socketio = require('socket.io');
+var Filter = require('bad-words');
 var http = require('http');
 var path = require('path');
 
@@ -27,10 +28,18 @@ io.on('connection', (socket)=>{
     socket.emit('message','Welcome to the application');
 
     //message is recieved
-    socket.on('sendMessage', (message) => {
+    socket.on('sendMessage', (message, callback) => {
+        //Check Bad Language
+        var filter = new Filter();
+        if (filter.isProfane(message)) {
+            return callback("Profanity is not allowed");
+        }
+
         //emit to all the clients
         io.emit('message', message);
-    })
+        //When message is emmited to all the clients by the server. Send this to sender client
+        callback('Delivered!')
+    });
 
     //when the client gets disconnected
     socket.on('disconnect',() => {
@@ -38,12 +47,13 @@ io.on('connection', (socket)=>{
     })
 
     //when client sends location
-    socket.on('sendLocation', (location) => {
+    socket.on('sendLocation', (location, status) => {
         console.log(location)
         socket.broadcast.emit('message',`https://google.com/maps?q=${location.lat},${location.long}`);
+        
+        status("Location has been shared!");
     })
 });
-
 
 //
 // ─── LISTEN TO HTTP SERVER ──────────────────────────────────────────────────────
