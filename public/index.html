@@ -12,30 +12,63 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.1.0/mustache.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.3/qs.min.js"></script>
+    <!-- CSS files -->
+    <link rel="stylesheet" href="./css/styles.css">
+    <!-- Images -->
+    <link rel="icon" href="./img/favicon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat-Application</title>
 </head>
 
 <body>
+    <div class="chat">
+        <div class="chat__sidebar">
 
-    <div id="messages"></div>
+
+        </div> 
+        <div class="chat__main">
+            <div id="messages"></div>
+
+            
+
+            <div class="compose">
+                <form id="message-form">
+                    <input type="text" name="message">
+                    <button>Send</button>
+                </form>
+            <button id="send-location">Share Location</button>
+
+            </div>
+
+
+        </div>
+    </div>
 
     <script id="message-template" type="html/text">
-        <p>{{createdAt}}: {{message}}</p>
+        <div class="message">
+            <p>
+                <span class="message__name">User Name</span>
+                <span class="message__meta">{{createdAt}}</span>
+            </p>
+            <p>{{message}}</p>
+        </div>
     </script>
 
     <script id="location-message-template" type="text/html">
-        <p>
-            {{createdAt}}: <a href="{{url}}" target='_blank'>My current location</a>
-        </p>
+        <div class="message">
+            <p>
+                <span class="message__name">User Name</span>
+                <span class="message__meta">{{createdAt}}</span>
+            </p>
+            <p>
+                <a href="{{url}}" target='_blank'>My current location</a>
+            </p>
+        </div>
+        
     </script>
 
-    <button id="send-location">Share Location</button>
-    <form id="message-form">
-        <input type="text" name="message">
-        <button>Send</button>
-    </form>
+    
     <script src="./js/chat.js"></script>
 
 </body>
