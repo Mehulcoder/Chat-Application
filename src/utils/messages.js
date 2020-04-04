@@ -1,3 +1,7 @@
+//
+// ─── MESSAGE FOR TEXT ───────────────────────────────────────────────────────────
+//
+
 var generateMessage = (text) => {
     return {
         text,
@@ -5,12 +9,18 @@ var generateMessage = (text) => {
     }
 }
 
+//
+// ─── MESSAGE FOR LOCATION ───────────────────────────────────────────────────────
+//
+
 var generateLocationMessage = (url) => {
     return{
         url,
         createdAt: new Date().getTime()
     }
 }
+
+// ────────────────────────────────────────────────────────────────────────────────
 
 module.exports = {
     generateMessage,
