@@ -2,6 +2,7 @@ var express = require('express');
 var request = require('request');
 var socketio = require('socket.io');
 var Filter = require('bad-words');
+var qs = require('query-string');
 var http = require('http');
 var path = require('path');
 var {generateMessage, generateLocationMessage} = require('./utils/messages');
@@ -23,10 +24,22 @@ app.use(express.static(publicDirectoryPath));
 //
 
 io.on('connection', (socket)=>{
+    
     console.log('A user connected');
-    socket.broadcast.emit('message',generateMessage('A new user has joined!'))
-    // Send data to the client
-    socket.emit('message',generateMessage('Welcome to the application'));
+
+    //Someone joins the application
+    socket.on('join',({username, room}) => {
+        //Allows us to join a room
+        socket.join('room');
+
+        // io.to.emit ----> send message to a specific room
+        // socket.broadcast.to.emit ----> Similar like normal but to a specific room
+        
+        // Send data to the client
+        socket.emit('message',generateMessage('Welcome to the application'));
+        socket.broadcast.to(room).emit('message',generateMessage(`${username} has joined!`));
+
+    })
 
     // Message is recieved
     socket.on('sendMessage', (message, callback) => {
@@ -46,12 +59,12 @@ io.on('connection', (socket)=>{
     socket.on('sendLocation', (location, status) => {
         socket.broadcast.emit('locationMessage',generateLocationMessage(`https://google.com/maps?q=${location.lat},${location.long}`));
         status("Location has been shared!");
-    })
+    });
 
     //when the client gets disconnected
     socket.on('disconnect',() => {
         io.emit('message', generateMessage("User has left"));
-    })
+    });
 });
 
 //

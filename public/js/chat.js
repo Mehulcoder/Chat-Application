@@ -9,6 +9,12 @@ var messageTemplate = $('#message-template').html();
 var locationMessageTemplate = $('#location-message-template').html();
 
 //
+// ─── OPTIONS ────────────────────────────────────────────────────────────────────
+//
+
+var {username, room} = Qs.parse(location.search);
+
+//
 // ─── RECIEVE DATA FROM SERVER ───────────────────────────────────────────────────
 //
 
@@ -32,9 +38,16 @@ socket.on('message', (message) => {
     $('#messages').append(html);
 });
 
+
 //
 // ─────────────────────────────────────────────────────── DATA TO THE SERVER ─────
 //
+
+//
+// ─── SHARING THE USERNAME AND ROOMNAME ──────────────────────────────────────────
+//
+
+socket.emit('join', {username, room})
 
 //
 // ─── PRINTING MESSAGE ───────────────────────────────────────────────────────────
@@ -61,6 +74,8 @@ $("#message-form").submit(function (e) {
 
 });
 
+
+
 //
 // ─── SHARE THE LOCATION ─────────────────────────────────────────────────────────
 //
@@ -86,8 +101,6 @@ $("#send-location").click(function (e) {
 
     //enable
     $("#send-location").removeAttr('disabled');
-
-    
 });
 
 // ────────────────────────────────────────────────────────────────────────────────
