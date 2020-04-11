@@ -29,8 +29,10 @@ io.on('connection', (socket)=>{
 
     //Someone joins the application
     socket.on('join',({username, room}) => {
+        console.log(room, username)
+        
         //Allows us to join a room
-        socket.join('room');
+        socket.join(room);
 
         // io.to.emit ----> send message to a specific room
         // socket.broadcast.to.emit ----> Similar like normal but to a specific room

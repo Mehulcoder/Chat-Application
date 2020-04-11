@@ -11,8 +11,8 @@ var locationMessageTemplate = $('#location-message-template').html();
 //
 // ─── OPTIONS ────────────────────────────────────────────────────────────────────
 //
-
-var {username, room} = Qs.parse(location.search);
+//Take from the url
+var {username, room} = Qs.parse(location.search, {ignoreQueryPrefix: true});
 
 //
 // ─── RECIEVE DATA FROM SERVER ───────────────────────────────────────────────────
@@ -42,12 +42,6 @@ socket.on('message', (message) => {
 //
 // ─────────────────────────────────────────────────────── DATA TO THE SERVER ─────
 //
-
-//
-// ─── SHARING THE USERNAME AND ROOMNAME ──────────────────────────────────────────
-//
-
-socket.emit('join', {username, room})
 
 //
 // ─── PRINTING MESSAGE ───────────────────────────────────────────────────────────
@@ -102,5 +96,12 @@ $("#send-location").click(function (e) {
     //enable
     $("#send-location").removeAttr('disabled');
 });
+
+//
+// ─── SHARING THE USERNAME AND ROOMNAME ──────────────────────────────────────────
+//
+
+socket.emit('join', {username, room})
+
 
 // ────────────────────────────────────────────────────────────────────────────────
