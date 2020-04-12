@@ -32,7 +32,7 @@ io.on('connection', (socket)=>{
     socket.on('join',(options, callback) => {
         
         //Add the user to the room
-        var {error, user} = addUser({id:    socket.id, ...options});
+        var {error, user} = addUser({id:socket.id, ...options});
         
         if (error) {
             return callback(error);
@@ -42,14 +42,17 @@ io.on('connection', (socket)=>{
         socket.join(user.room);
         
         // Send data to the client
-        socket.emit('message',generateMessage('Welcome to the application'));
-        socket.broadcast.to(user.room).emit('message',generateMessage(`${user.username} has joined!`));
+        socket.emit('message',generateMessage("Admin",'Welcome to the application'));
+        socket.broadcast.to(user.room).emit('message',generateMessage("Admin", `${user.username} has joined!`));
 
         callback();
     })
 
     // Message is recieved
     socket.on('sendMessage', (message, callback) => {
+        //Get the user
+        var user = getUser(socket.id);
+        
         //Check Bad Language
         var filter = new Filter();
         if (filter.isProfane(message)) {
@@ -57,14 +60,15 @@ io.on('connection', (socket)=>{
         }
 
         //emit to all the clients
-        io.emit('message', generateMessage(message));
+        io.to(user.room).emit('message', generateMessage(user.username, message));
         //When message is emmited to all the clients by the server. Send this to sender client
         callback()
     });
 
     //when client sends location
     socket.on('sendLocation', (location, status) => {
-        socket.broadcast.emit('locationMessage',generateLocationMessage(`https://google.com/maps?q=${location.lat},${location.long}`));
+        var user = getUser(socket.id);
+        io.to(user.room).emit('locationMessage',generateLocationMessage(user.username, `https://google.com/maps?q=${location.lat},${location.long}`));
         status("Location has been shared!");
     });
 

@@ -2,8 +2,9 @@
 // ─── MESSAGE FOR TEXT ───────────────────────────────────────────────────────────
 //
 
-var generateMessage = (text) => {
+var generateMessage = (username, text) => {
     return {
+        username,
         text,
         createdAt: new Date().getTime()
     }
@@ -13,8 +14,9 @@ var generateMessage = (text) => {
 // ─── MESSAGE FOR LOCATION ───────────────────────────────────────────────────────
 //
 
-var generateLocationMessage = (url) => {
+var generateLocationMessage = (username, url) => {
     return{
+        username, 
         url,
         createdAt: new Date().getTime()
     }
