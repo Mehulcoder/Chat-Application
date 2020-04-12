@@ -15,7 +15,7 @@ var app = express();
 var server = http.createServer(app);
 var io = socketio(server);
 
-var port = 3000 || process.env.PORT;
+var port = 8000 || process.env.PORT;
 
 var publicDirectoryPath = path.join(__dirname,'../public');
 app.use(express.static(publicDirectoryPath));
@@ -44,6 +44,12 @@ io.on('connection', (socket)=>{
         // Send data to the client
         socket.emit('message',generateMessage("Admin",'Welcome to the application'));
         socket.broadcast.to(user.room).emit('message',generateMessage("Admin", `${user.username} has joined!`));
+
+        //Update the users list and emit it to the room
+        io.to(user.room).emit('roomData', {
+            room:user.room,
+            users: getUsersInRoom(user.room)
+        })
 
         callback();
     })
@@ -79,6 +85,10 @@ io.on('connection', (socket)=>{
 
         if (user) {
             io.to(user.room).emit('message', generateMessage(`${user.username} has left`));
+            io.to(user.room).emit('roomData', {
+                room:user.room,
+                users: getUsersInRoom(user.room)
+            })
         }
 
     });

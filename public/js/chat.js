@@ -7,6 +7,7 @@ var socket = io();
 
 var messageTemplate = $('#message-template').html();
 var locationMessageTemplate = $('#location-message-template').html();
+var sidebarTemplate = $('#sidebar-template').html();
 
 //
 // ─── OPTIONS ────────────────────────────────────────────────────────────────────
@@ -39,6 +40,17 @@ socket.on('message', (message) => {
     });
     $('#messages').append(html);
 });
+
+//Getting room data on update
+socket.on('roomData', ({room, users})=>{
+    var html = Mustache.render(sidebarTemplate,{
+        room,
+        users
+    });
+
+    $('#sidebar').html(html);
+    // $('#sidebar').append(html);
+})
 
 
 //
