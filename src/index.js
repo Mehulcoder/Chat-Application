@@ -6,6 +6,7 @@ var qs = require('query-string');
 var http = require('http');
 var path = require('path');
 var {generateMessage, generateLocationMessage} = require('./utils/messages');
+var { getUser, getUsersInRoom, removeUser, addUser} = require('./utils/users');
 
 // ────────────────────────────────────────────────────────────────────────────────
 
@@ -28,18 +29,22 @@ io.on('connection', (socket)=>{
     console.log('A user connected');
 
     //Someone joins the application
-    socket.on('join',({username, room}) => {
-        console.log(room, username)
+    socket.on('join',({username, room}, callback) => {
         
-        //Allows us to join a room
-        socket.join(room);
+        //Add the user to the room
+        var {error, user} = addUser({id:socket.id, username, room});
+        if (error) {
+            return callback(error);
+        }
 
-        // io.to.emit ----> send message to a specific room
-        // socket.broadcast.to.emit ----> Similar like normal but to a specific room
+        //Allows us to join a room //user.room ---> trimmed and lowercased
+        socket.join(user.room);
         
         // Send data to the client
         socket.emit('message',generateMessage('Welcome to the application'));
-        socket.broadcast.to(room).emit('message',generateMessage(`${username} has joined!`));
+        socket.broadcast.to(user.room).emit('message',generateMessage(`${user.username} has joined!`));
+
+        callback();
 
     })
 

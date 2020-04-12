@@ -29,7 +29,7 @@ var addUser = ({id, username, room}) => {
     //Validate Username
     if (existingUser) {
         return {
-            error:"Username in use";
+            error:"Username in use"
         }
     }
     
@@ -71,5 +71,12 @@ var getUsersInRoom = (room) => {
 }
 
 // ────────────────────────────────────────────────────────────────────────────────
+
+module.exports = {
+    getUser,
+    getUsersInRoom,
+    removeUser,
+    addUser
+}
 
 
