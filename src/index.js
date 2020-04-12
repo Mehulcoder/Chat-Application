@@ -15,7 +15,7 @@ var app = express();
 var server = http.createServer(app);
 var io = socketio(server);
 
-var port = 8000 || process.env.PORT;
+var port = process.env.PORT || 8000;
 
 var publicDirectoryPath = path.join(__dirname,'../public');
 app.use(express.static(publicDirectoryPath));
