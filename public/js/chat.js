@@ -52,7 +52,7 @@ var autoscroll = () => {
 socket.on('locationMessage', (url) => {
     //Render the template as the message is recieved 
     var html = Mustache.render(locationMessageTemplate,{
-        username:message.username,
+        username:url.username,
         url:url.text,
         createdAt:moment(url.createdAt).format('h:mm a')
     });
