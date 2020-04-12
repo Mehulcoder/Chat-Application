@@ -32,7 +32,8 @@ io.on('connection', (socket)=>{
     socket.on('join',(options, callback) => {
         
         //Add the user to the room
-        var {error, user} = addUser({id:socket.id, ...options});
+        var {error, user} = addUser({id:    socket.id, ...options});
+        
         if (error) {
             return callback(error);
         }
@@ -45,7 +46,6 @@ io.on('connection', (socket)=>{
         socket.broadcast.to(user.room).emit('message',generateMessage(`${user.username} has joined!`));
 
         callback();
-
     })
 
     // Message is recieved
@@ -70,7 +70,13 @@ io.on('connection', (socket)=>{
 
     //when the client gets disconnected
     socket.on('disconnect',() => {
-        io.emit('message', generateMessage("User has left"));
+        //Remove the user
+        var user = removeUser(socket.id);
+
+        if (user) {
+            io.to(user.room).emit('message', generateMessage(`${user.username} has left`));
+        }
+
     });
 });
 

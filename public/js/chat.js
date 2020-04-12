@@ -101,7 +101,12 @@ $("#send-location").click(function (e) {
 // ─── SHARING THE USERNAME AND ROOMNAME ──────────────────────────────────────────
 //
 
-socket.emit('join', {username, room})
+socket.emit('join', {username, room}, (error) => {
+    if (error) {
+        alert(error);
+        location.href = '/'
+    }
+});
 
 
 // ────────────────────────────────────────────────────────────────────────────────
