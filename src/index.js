@@ -29,10 +29,10 @@ io.on('connection', (socket)=>{
     console.log('A user connected');
 
     //Someone joins the application
-    socket.on('join',({username, room}, callback) => {
+    socket.on('join',(options, callback) => {
         
         //Add the user to the room
-        var {error, user} = addUser({id:socket.id, username, room});
+        var {error, user} = addUser({id:socket.id, ...options});
         if (error) {
             return callback(error);
         }
